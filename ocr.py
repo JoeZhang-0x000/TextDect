@@ -1,14 +1,17 @@
 import pytesseract
 from PIL import Image
+import cv2
 import sys
 
-img_path = sys.argv[1]
+def ocrDis(im):
+    
+    string = pytesseract.image_to_string(im, lang= 'eng')
 
-# 读取图片
-im = Image.open(img_path)
+    # 打印识别结果
+    print(string)
 
-# 识别文字，并指定语言为中文
-string = pytesseract.image_to_string(im, lang='eng')
+if __name__ == '__main__':
+    img_path = sys.argv[1]
+    im = cv2.imread(img_path)
+    ocrDis(im)
 
-# 打印识别结果
-print(string)

@@ -5,6 +5,7 @@ import copy
 import pytesseract
 import sys
 import time
+import ocr
 
 MAX_WID, MAX_HEI = 0, 0
 
@@ -86,6 +87,10 @@ def applyAdOtsu(img,show=False):
     # 若边界上的黑块 < 白块， 说明背景是白色
     cnt_b = np.count_nonzero(t_img == 0)
     cnt_w = np.count_nonzero(t_img == 255)
+    plt.title('OTSU Before FLIPPED')
+    plt.axis('off')
+    plt.imshow(bin_img,cmap='gray')
+    plt.show()
     print(f'边界黑块数量:{cnt_b}，白块数量:{cnt_w}')
     if cnt_b < cnt_w:
         print('背景偏亮，文字篇暗，翻转明暗度')
@@ -101,7 +106,7 @@ def applyAdOtsu(img,show=False):
 ###############################################################
 # 坝点标注过程
 MIN_W = 1
-MAX_W = 10
+MAX_W = 10  
 
 # 计算V_Len(x,y)
 def getVlen(bin_array, x, y):
@@ -236,7 +241,7 @@ def applyFlood(bin_img,show=True):
 ##########################################################
 # 使用OCR识别
 def applyOcr(bin_img,show=True):
-    text = pytesseract.image_to_string(bin_img,)
+    text = pytesseract.image_to_string(bin_img,lang='eng')
     
     if show == True:
         print(f'识别结果:{text}')
